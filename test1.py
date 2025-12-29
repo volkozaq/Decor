@@ -1,14 +1,15 @@
 import os
 from datetime import  datetime
+import functools
 
 def logger(old_function):
-
+    @functools.wraps(old_function)
     def new_function(*args, **kwargs):
         start = datetime.now()
         result = old_function(*args, **kwargs)
-        lines = [str(start), ' ', old_function.__name__, ' ', str(args), ' ', str(kwargs), ' ', str(result)]
+        log_entry = f"{start} | {old_function.__name__} | {args} | {kwargs} | {result} /n"
         with open('main.log', 'a') as file:
-            file.writelines([line for line in lines])
+            file.write(log_entry)
         return result
     return new_function
 

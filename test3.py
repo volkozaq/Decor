@@ -1,19 +1,5 @@
-import os
-from datetime import  datetime
+from test2 import logger
 
-def logger(path):
-    def __logger(old_function):
-        def new_function(*args, **kwargs):
-            start = datetime.now()
-            result = old_function(*args, **kwargs)
-            lines = [str(start), ' ', old_function.__name__, ' ', str(args), ' ', str(kwargs), ' ', str(result)]
-            with open(path, 'a') as file:
-                file.writelines([line for line in lines])
-            return result
-
-        return new_function
-
-    return __logger
 
 class Student:
     def __init__(self, name, surname, gender):
@@ -43,6 +29,11 @@ class Mentor:
         else:
             return 'Ошибка'
 
+    @logger('log_old.log')
+    def print_rates(self, grade):
+        print(grade)
+
+
 class Lecturer(Mentor):
     def __init__(self, name, surname):
         super().__init__(name, surname)
@@ -63,7 +54,7 @@ cool_mentor.rate_hw(best_student, 'Python', 10)
 cool_mentor.rate_hw(best_student, 'Python', 10)
 cool_mentor.rate_hw(best_student, 'Python', 10)
 
-print(best_student.grades)
+cool_mentor.print_rates(12)
 
 
 lecturer = Lecturer('Иван', 'Иванов')
